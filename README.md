@@ -8,16 +8,21 @@ When the configuration of the helm/values.yaml is finished, you must install the
 
 *make sure you have helm installed allready, if not refer to the [official install](https://helm.sh/docs/intro/install/)*
 
-> helm dependency build /path/to/chart
-> helm install --create-namespace -n yourNameSpace yourReleaseName /path/to/chart
+```
+helm dependency build /path/to/chart
+helm install --create-namespace -n yourNameSpace yourReleaseName /path/to/chart
+```
 
 ## Uninstall
 to uninstall the chart run the following commands :
 
 **WARNING ! all volumes will be deleted and all data will be lost !**
 
-> helm delete -n yourNameSpace yourReleaseName 
-> kubectl delete namespaces yourNameSpace
+
+``` 
+helm delete -n yourNameSpace yourReleaseName 
+kubectl delete namespaces yourNameSpace
+```
 
 ## Notes
 For now (2023-03-08) this chart only support transcoding by cpu. Gpu transcoding is available via custom profiles, which I am unfamiliar with.
