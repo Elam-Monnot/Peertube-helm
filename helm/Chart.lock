@@ -1,0 +1,12 @@
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.2.1
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 17.8.0
+- name: mail
+  repository: https://bokysan.github.io/docker-postfix
+  version: v3.6.1
+digest: sha256:0dbe83b44df80f1ae12b37616dc0ebcc84d0fa90babf38bcc35598b61488a4ee
+generated: "2023-02-27T16:25:20.854090667Z"

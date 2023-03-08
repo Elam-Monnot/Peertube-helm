@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "peertube.fullname" . }}
+  labels:
+    {{- include "peertube.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "peertube.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "peertube.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "peertube.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          {{  if .Values.persistence.enbaled }}
+          volumeMounts:
+            - name: pvc-peertube
+              mountPath: /data
+          {{ end }}
+          env:
+            - name: PEERTUBE_DB_USERNAME
+              value: {{ .Values.peertube.env.dbUser | quote }}
+            - name: PEERTUBE_DB_PASSWORD
+              value: {{ .Values.peertube.env.dbPasswd | quote }}
+            - name: PEERTUBE_DB_SSL
+              value: {{ .Values.peertube.env.dbSsl | quote }}
+            - name: PEERTUBE_DB_HOSTNAME
+              value: {{ .Values.peertube.env.dbHostname | quote }}
+            - name: PEERTUBE_WEBSERVER_HOSTNAME
+              value: {{ .Values.peertube.env.webHostname | quote }}
+            - name: PEERTUBE_TRUST_PROXY
+              value: {{ .Values.peertube.env.trustProxy | quote }}
+            - name: PEERTUBE_SECRET
+              value: {{ .Values.peertube.env.secret | quote }}
+            - name: PEERTUBE_SMTP_HOSTNAME
+              value: {{ .Values.peertube.env.smtpHostname | quote }}
+            - name: PEERTUBE_SMTP_PORT
+              value: {{ .Values.peertube.env.smtpPort | quote }}
+            - name: PEERTUBE_SMTP_FROM
+              value: {{ .Values.peertube.env.smtpFrom | quote }}
+            - name: PEERTUBE_SMTP_TLS
+              value: {{ .Values.peertube.env.smtpTls | quote }}
+            - name: PEERTUBE_SMTP_DISABLE_STARTTLS 
+              value: {{ .Values.peertube.env.smtpDisableStartTls | quote }}
+            - name: PEERTUBE_ADMIN_EMAIL
+              value: {{ .Values.peertube.env.adminEmail | quote }}
+            - name: PEERTUBE_REDIS_HOSTNAME
+              value: {{ .Values.peertube.env.redisHostname | quote }}
+            - name: PEERTUBE_REDIS_AUTH
+              value: {{ .Values.peertube.env.redisAuth | quote }}
+            - name: PEERTUBE_SIGNUP_ENABLED
+              value: {{ .Values.peertube.app.userCanRegister | quote }}
+            - name: PT_INITIAL_ROOT_PASSWORD
+              value: {{ .Values.peertube.app.rootPasswd | quote }}
+            - name: PEERTUBE_TRANSCODING_360P
+              value: {{ .Values.peertube.app.transcoding360 | quote }}
+            - name: PEERTUBE_TRANSCODING_480P
+              value: {{ .Values.peertube.app.transcoding480 | quote }}
+            - name: PEERTUBE_TRANSCODING_720P
+              value: {{ .Values.peertube.app.transcoding720 | quote }}
+            - name: PEERTUBE_TRANSCODING_1080P
+              value: {{ .Values.peertube.app.transcoding1080 | quote }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+        - name: pvc-peertube
+          persistentVolumeClaim:
+            claimName: pvc-peertube
+      {{- end }}     
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

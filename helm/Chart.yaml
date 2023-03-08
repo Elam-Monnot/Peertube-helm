@@ -1,0 +1,16 @@
+apiVersion: v2
+name: peertube
+description: A Helm chart for Kubernetes that deploys peertube, a software made by the company Framasoft
+type: application
+dependencies:
+- name: postgresql
+  version : 12.2.1 
+  repository: "https://charts.bitnami.com/bitnami"
+- name: redis
+  version: 17.8.0
+  repository: "https://charts.bitnami.com/bitnami"
+- name: mail
+  version: 3.6.1
+  repository: "https://bokysan.github.io/docker-postfix"
+version: 1.0.0
+appVersion: "5.0.1"

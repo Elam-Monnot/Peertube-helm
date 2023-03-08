@@ -1,0 +1,154 @@
+## this file holds the main configuration of the chart
+# you must modify it in order for the chart to work
+
+replicaCount: 1
+
+image:
+  repository: chocobozzz/peertube
+  pullPolicy: IfNotPresent
+  tag: "v5.0.1-bullseye"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 9000
+  nginxPort: 9001
+
+## default config for postgresql should do, but feel free to modify it if required.
+# must stay consistent with peertube configuration, otherwise peertube will crash
+
+postgresql:
+  enabled: true
+  primary:
+    persistence:
+      enabled: true
+      existingClaim: "pvc-postgres"
+  global:
+    postgresql:
+      auth:
+        postgrePassword: "admin"
+        username: "user"
+        password: "user"
+        database: "peertube"
+
+## the main list of variables tha will be applied in the peertube cointainer
+# any error or misconfiguration will make peertube crash.
+
+peertube:
+  env:
+    dbUser: user # must be consistent with postgresql configuration
+    dbPasswd: user # must be consistent with postgresql configuration
+    dbSsl: false # disabled by default WARNING: ssl connection feature not tested, use at your own risk
+    dbHostname: peertube-postgresql # must be consistent with postgresql configuration
+    webHostname: YourWebDomain # must be changed to your local setup
+    secret:  # CANNOT BE EMPTY ! use openssl rand -hex 32 to generate a random string and paste it here, should remain secret
+    smtpHostname: peertube-mail # must be consistent with mail configuration
+    smtpPort: 587 # must be consistent with mail configuration
+    smtpFrom: noreply@lan.lan # not configured by default, add something meaningfull if you want
+    smtpTls: false # disabled by default WARNING: tls connection feature not tested, use at your own risk
+    smtpDisableStartTls: false # unless crashes related to tls/ssl, this should be unchanged
+    adminEmail: root@localhost.lan # use this if you want peopleto be able to reach you 
+    redisHostname: peertube-redis-master # must be consistent with redis configuration
+    redisAuth: peertube # must be consistent with redis configuration
+  app:
+    userCanRegister: true # control if people can register by themselves
+    rootPasswd: rootroot # CHANGE THIS! the default admin username is 'root' this variable define the password
+## the next section configure at wich quality videos will be transcoded 
+    transcoding360: true
+    transcoding480: true
+    transcoding720: true
+    transcoding1080: true
+
+## the configuration of the postfix server called 'mail' here 
+# change these settings if you know what you are doing
+mail:
+  enbled: true
+  config:
+    general:
+      ALLOWED_SENDER_DOMAINS: # should be the same as your web domain
+      DKIM_AUTOGENERATE: "yes"
+    opendkim:
+      RequireSafeKeys: "no"
+    postfix:
+       smtp_tls_security_level: "secure" # works by default, any other tls level is untested
+  persistence:
+    enabled: false
+  service:
+    port: 587
+
+## the configuration of the redis server
+
+redis:
+  master:
+    persistence:
+      enabled: true
+      existingClaim: "pvc-redis"
+  replica:
+    persistence:
+      enabled: true
+      existingClaim: "pvc-redis"
+  auth:
+    enbled: true
+    password: "peertube"
+
+## ingress configuration is very specific this part must be configured
+ingress:
+  enabled: true 
+  className: ""
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: 4G
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: # your domain here
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: 
+  #  - secretName: chart-example-tls
+    - hosts:
+      -  # your domain here
+
+resources: {}
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+
+## enabled by default, but can be disabled safely
+
+autoscaling:
+  enabled: true
+  minimumReplicas: 3
+  maximumReplicas: 20
+  targetCPUUtilizationPercentage: 90
+  targetMemoryUtilizationPercentage: 75
+  windowSeconds: 120
+  minCPUPercentage: 20
+  minMemoryPercentage: 30
+
+## this section should be configured to match your needs and available ressources
+persistence:
+  enabled: true
+  reclaimPolicy: Retain
+  redisVolumeStorage: 5Gi
+  peertubeVolumeStorage: 20Gi
+  postgresqlVolumeStorage: 5Gi
+  accessMode: ReadWriteOnce #ReadWriteMany is preffered here in order to increase performances
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
