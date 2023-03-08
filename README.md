@@ -4,6 +4,7 @@ The Peertube version is **5.0.1**. A minimal amount of **manual configuration** 
 You can either use a handmade values.yaml to use upon install **OR** clone the repository and edit the values.yaml in the helm directory. The second one is preferred.
 
 ## Install
+First go to helm/values.yaml and tweak it to your specific configuration.
 When the configuration of the helm/values.yaml is finished, you must install the helm chart running this command :
 
 *make sure you have helm installed allready, if not refer to the [official install](https://helm.sh/docs/intro/install/)*
