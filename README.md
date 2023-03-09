@@ -27,3 +27,4 @@ kubectl delete namespaces yourNameSpace
 
 ## Notes
 For now (2023-03-08) this chart only support transcoding by cpu. Gpu transcoding is available via custom profiles, which I am unfamiliar with.
+(2023-03-09) Firefox and Chromium have been tested and both works.
