@@ -69,6 +69,7 @@ peertube:
     transcoding480: true
     transcoding720: true
     transcoding1080: true
+    transcoding2160: false
 
 ## the configuration of the postfix server called 'mail' here 
 # change these settings if you know what you are doing

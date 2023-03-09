@@ -96,6 +96,8 @@ spec:
               value: {{ .Values.peertube.app.transcoding720 | quote }}
             - name: PEERTUBE_TRANSCODING_1080P
               value: {{ .Values.peertube.app.transcoding1080 | quote }}
+            - name: PEERTUBE_TRANSCODING_2160P
+              value: {{ .Values.peertube.app.transcoding2160 | quote }}
       {{- if .Values.persistence.enabled }}
       volumes:
         - name: pvc-peertube
