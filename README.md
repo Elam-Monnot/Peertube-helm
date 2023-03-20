@@ -19,7 +19,7 @@ Peertube comes bundled with a dedicated redis, postgresql and smtp server.
 ## Uninstall
 to uninstall the chart run the following commands :
 
-:warning:** All volumes will be deleted and all data will be lost !**
+:warning: **All volumes will be deleted and all data will be lost !**   
 *If installed in the default namespace, you won't be able to delete the namespace, delete each ressources instead.*
 
 ``` 
