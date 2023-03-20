@@ -27,6 +27,6 @@ helm delete -n yourNameSpace yourReleaseName
 kubectl delete namespaces yourNameSpace
 ```
 ## Notes
-For now (2023-03-08) this chart only support transcoding by cpu. Gpu transcoding is available via custom profiles, which I am unfamiliar with.
-(2023-03-09) Firefox and Chromium have been tested and both works.  
-Special thanks to [LecyneNoir](https://git.lecygnenoir.info/LecygneNoir), this chart is based on his work, I updated it for a newer version of PeerTube and added some tweaks.
+ - For now (2023-03-08) this chart only support transcoding by cpu. Gpu transcoding is available via custom profiles, which I am unfamiliar with.
+ - (2023-03-09) Firefox and Chromium have been tested and both works.  
+ - Special thanks to [LecyneNoir](https://git.lecygnenoir.info/LecygneNoir), this chart is based on his work, I updated it for a newer version of PeerTube and added some tweaks.
