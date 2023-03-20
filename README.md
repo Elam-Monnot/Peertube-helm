@@ -15,7 +15,7 @@ helm dependency build /path/to/chart
 helm install --create-namespace -n yourNameSpace yourReleaseName /path/to/chart
 ```
 
-Peertube comes bundled with a dedicated redis, postgresql and smtp server.
+Peertube comes bundled with dedicated redis, postgresql and smtp servers.
 ## Uninstall
 to uninstall the chart run the following commands :
 
