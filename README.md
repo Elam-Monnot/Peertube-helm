@@ -8,7 +8,7 @@ You can either use a handmade values.yaml to use upon install **OR** clone the r
 First go to helm/values.yaml and tweak it to your specific configuration.
 When the configuration of the helm/values.yaml is finished, you must install the helm chart running this command :
 
-*make sure you have helm installed allready, if not refer to the [official install](https://helm.sh/docs/intro/install/)*
+:bulb:*Make sure you have helm installed allready, if not refer to the [official install](https://helm.sh/docs/intro/install/)*
 
 ```
 helm dependency build /path/to/chart
@@ -19,14 +19,14 @@ Peertube comes bundled with a dedicated redis, postgresql and smtp server.
 ## Uninstall
 to uninstall the chart run the following commands :
 
-**WARNING ! all volumes will be deleted and all data will be lost !**
+:warning:** All volumes will be deleted and all data will be lost !**
 *If installed in the default namespace, you won't be able to delete the namespace, delete each ressources instead.*
 
 ``` 
 helm delete -n yourNameSpace yourReleaseName 
 kubectl delete namespaces yourNameSpace
 ```
-## Notes
+## Notes :memo:
  - For now (2023-03-08) this chart only support transcoding by cpu. Gpu transcoding is available via custom profiles, which I am unfamiliar with.
  - (2023-03-09) Firefox and Chromium have been tested and both works.  
  - Special thanks to [LecyneNoir](https://git.lecygnenoir.info/LecygneNoir), this chart is based on his work, I updated it for a newer version of PeerTube and added some tweaks.
