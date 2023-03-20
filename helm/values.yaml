@@ -1,8 +1,6 @@
 ## this file holds the main configuration of the chart
 # you must modify it in order for the chart to work
-
 replicaCount: 1
-
 image:
   repository: chocobozzz/peertube
   pullPolicy: IfNotPresent
@@ -25,9 +23,8 @@ service:
   port: 9000
   nginxPort: 9001
 
-## default config for postgresql should do, but feel free to modify it if required.
+## default config for postgresql should work, but feel free to modify it if required.
 # must stay consistent with peertube configuration, otherwise peertube will crash
-
 postgresql:
   enabled: true
   primary:
@@ -42,9 +39,8 @@ postgresql:
         password: "user"
         database: "peertube"
 
-## the main list of variables tha will be applied in the peertube cointainer
+## the main list of variables tha will be applied in the peertube container
 # any error or misconfiguration will make peertube crash.
-
 peertube:
   env:
     dbUser: user # must be consistent with postgresql configuration
@@ -89,7 +85,6 @@ mail:
     port: 587
 
 ## the configuration of the redis server
-
 redis:
   master:
     persistence:
@@ -103,13 +98,13 @@ redis:
     enbled: true
     password: "peertube"
 
-## ingress configuration is very specific this part must be configured
+## ingress configuration is very specific this part must be configured or else you'll get 503 or 404 errors
 ingress:
   enabled: true 
   className: ""
   annotations: 
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/proxy-body-size: 4G
+    nginx.ingress.kubernetes.io/proxy-body-size: 4G # this caps the size of imported videos, if set low this might prevent you from uploading videos
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: # your domain here
@@ -128,9 +123,7 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-
 ## enabled by default, but can be disabled safely
-
 autoscaling:
   enabled: true
   minimumReplicas: 3
