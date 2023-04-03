@@ -11,6 +11,9 @@ When the configuration of the helm/values.yaml is finished, you must install the
 :bulb:*Make sure you have helm installed allready, if not refer to the [official install](https://helm.sh/docs/intro/install/)*
 
 ```
+helm repo add mail https://bokysan.github.io/docker-postfix
+helm repo add postgresql https://charts.bitnami.com/bitnami
+helm repo add redis https://charts.bitnami.com/bitnami
 helm dependency build /path/to/chart
 helm install --create-namespace -n yourNameSpace yourReleaseName /path/to/chart
 ```
