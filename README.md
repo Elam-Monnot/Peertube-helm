@@ -1,7 +1,6 @@
 # Introduction
 This chart is an **unofficial** install of [Peertube](https://github.com/Chocobozzz/PeerTube), made to work in kubernetes **>=1.23** with **Helm >=3.11.1**.  
-The Peertube version is **5.0.1**. A minimal amount of **manual configuration** is still required in order to make this chart work.   
-You can either use a handmade values.yaml to use upon install **OR** clone the repository and edit the values.yaml in the helm directory. **The second one is preferred.**
+The Peertube version is **5.0.1**. A minimal amount of **manual configuration** is still required in order to make this chart work. You can either use a handmade values.yaml to use upon install **OR** clone the repository and edit the values.yaml in the helm directory. **The second one is preferred.**
 ## Install
 First clone the repository within your cluster reach, being inside of it or something able to use kubectl and Helm.    
 Then go to helm/values.yaml and tweak it to your specific configuration, help on what to modify is present inside values.yaml with comments.    
@@ -17,7 +16,7 @@ helm dependency build /path/to/chart
 helm install --create-namespace -n yourNameSpace yourReleaseName /path/to/chart
 ```
 
-The chart comes bundled with dedicated redis, postgresql and smtp servers. You **could** use your own pods with postgresql, redis or postfix, but it's uncharted teritory at this point.
+The chart comes bundled with dedicated redis, postgresql and smtp servers. You **could** use your own pods with postgresql, redis or postfix, but it's uncharted territory at this point.
 ## Uninstall
 to uninstall the chart run the following commands :
 
